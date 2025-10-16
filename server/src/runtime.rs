@@ -69,9 +69,12 @@ impl WasmRuntime {
         Ok(WasmRuntime { id, _engine:engine, instance, store })
     }
     pub fn run(&mut self) -> anyhow::Result<String> {
-        let func = self.instance.get_typed_func::<(), ()>(&mut self.store, "_start")?;
-        func.call(&mut self.store, ())?;
 
+        println!("Getting _start function for ID: {}", self.id);
+        let func = self.instance.get_typed_func::<(), ()>(&mut self.store, "_start")?;
+        println!("Running WASM runtime with ID: {}", self.id);
+        func.call(&mut self.store, ())?;
+        println!("Finished running WASM runtime with ID: {}", self.id);
         Ok(format!("Runtime {} executed!", self.id))
     }
 

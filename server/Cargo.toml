@@ -12,4 +12,4 @@ tokio-macros = "2.6.0"
 warp = { version = "0.4.2", features = ["server"] }
 wasmtime = "37.0.0"
 wasmtime-wasi = "37.0.0"
-wasmtime-wasi-nn = "37.0.0"
+wasmtime-wasi-nn = { version = "37.0.0", features = ["pytorch"] }

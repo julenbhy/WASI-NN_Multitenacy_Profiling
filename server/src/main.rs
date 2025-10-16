@@ -157,6 +157,7 @@ async fn main() {
                     let mut map = runtimes.lock().await;
                     let removed_ids: Vec<usize> = map.keys().cloned().collect();
                     map.clear();
+                    println!("All runtimes deleted");
                     Ok::<_, warp::Rejection>(warp::reply::json(&json!({
                         "removed": removed_ids,
                         "total_remaining": 0
@@ -186,6 +187,7 @@ async fn main() {
                             missing.push(id);
                         }
                     }
+                    println!("Deleted runtimes: {:?}, missing: {:?}", removed, missing);
                     Ok::<_, warp::Rejection>(warp::reply::json(&json!({
                         "removed": removed,
                         "missing": missing,

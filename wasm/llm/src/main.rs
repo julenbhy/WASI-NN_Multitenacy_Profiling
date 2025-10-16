@@ -66,7 +66,8 @@ pub fn main() -> Result<(), Error> {
 
     // Configuration
     let prompt = "A photo of a cat sitting on a mat with";
-    let model_path = "fixture/models_f32/EleutherAI_pythia-14m.pt";
+    let target = "cpu";
+    let model_path = "./fixture/models/float16/cpu/EleutherAI_pythia-14m.pt";
     let vocab_size = 50304;
     let max_tokens = 1;
 
@@ -83,14 +84,19 @@ pub fn main() -> Result<(), Error> {
     let start_total = Instant::now();
 
     // Load model
+    println!("→ Loading model from {}", model_path);
     let model = fs::read(model_path)?;
+    println!("→ Initializing graph... ");
     let graph = GraphBuilder::new(GraphEncoding::Pytorch, target).build_from_bytes(&[model])?;
     let context = graph.init_execution_context()?;
+
     // Load tokenizer
-    let tokenizer = Tokenizer::from_file("fixture/tokenizer.json").unwrap();
+    println!("→ Loading tokenizer... ");
+    let tokenizer = Tokenizer::from_file("./fixture/tokenizer.json").unwrap();
 
     // Tokenize prompt
-    let input_ids = tokenizer.encode(prompt, false).unwrap()
+    println!("→ Tokenizing prompt... ");
+    let input_ids: Vec<_> = tokenizer.encode(prompt, false).unwrap()
         .get_ids()
         .iter()
         .map(|&x| x as i64)
@@ -101,6 +107,7 @@ pub fn main() -> Result<(), Error> {
 
     // Generate text
     let generated_text = generate_text(context, input_ids, &tokenizer, vocab_size, max_tokens)?;
+    
     println!("\n\n→ Final generated text:\n{}", generated_text);
 
     let duration_total = start_total.elapsed();

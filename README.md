@@ -6,6 +6,10 @@ Launch the executor on a terminal
 
     cargo run -p server
 
+Add the wasm target to Cargo
+
+    rustup target add wasm32-wasip1
+
 Compile a wasm code example
 
     cargo build-wasm -p hello
