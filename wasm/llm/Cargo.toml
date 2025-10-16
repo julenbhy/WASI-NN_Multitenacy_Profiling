@@ -1,0 +1,11 @@
+[package]
+name = "llm"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.100"
+wasi-nn = "0.6.0"
+tokenizers = { version = "0.19", default-features = false, features = ["unstable_wasm"] }
+#image = { version = "0.25.2", default-features = false, features = ["png"] }
+#bytemuck = "1.23.2"
