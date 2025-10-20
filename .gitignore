@@ -24,3 +24,7 @@ target
 
 # Python
 __pycache__/
+
+# Models
+*.pt
+*.csv

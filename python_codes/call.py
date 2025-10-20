@@ -1,15 +1,16 @@
 import requests
 
 BASE_URL = "http://127.0.0.1:3030"
+TARGET = "llm" # llm or hello
 
 def main():
     # Create 3 runtimes
-    create_resp = requests.post(BASE_URL + "/create", json={"count": 3, "wasm_path": "./target/wasm32-wasip1/release/hello.wasm"})
+    create_resp = requests.post(BASE_URL + "/create", json={"count": 1, "wasm_path": f"./target/wasm32-wasip1/release/{TARGET}.wasm"})
     print("Create response:", create_resp.json())
     # Example output: {"status": "created", "total_runtimes": 3}
 
     # Run the 3 runtimes simultaneously
-    run_resp = requests.post(BASE_URL + "/run", json={"runtime_ids": [0, 1, 2]})
+    run_resp = requests.post(BASE_URL + "/run", json={"runtime_ids": [0]})
     print("Run response:", run_resp.json())
     # Example output: {"results": ["Runtime 0 executed!", "Runtime 1 executed!", "Runtime 2 executed!"]}
 

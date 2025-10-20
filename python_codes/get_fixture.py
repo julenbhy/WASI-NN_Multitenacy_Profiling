@@ -8,12 +8,12 @@ warnings.filterwarnings("ignore", category=torch.jit.TracerWarning)
 
 
 # Models to test
-MODEL_NAMES = ["14m", "70m"]  # ["14m", "70m", "160m", "410m", "1b", "1.4b", "2.8b", "6.9b", "12b"]  # puedes añadir "6.9b", "12b"
+MODEL_NAMES = ["14m", "70m", "160m", "410m"]  # ["14m", "70m", "160m", "410m", "1b", "1.4b", "2.8b", "6.9b", "12b"]  # puedes añadir "6.9b", "12b"
 MODELS = [f"EleutherAI/pythia-{label}" for label in MODEL_NAMES]
 
 # Tipos de precisión
 DTYPES = {
-    #"float32": torch.float32,
+    "float32": torch.float32,
     "float16": torch.float16,
 }
 

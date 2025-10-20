@@ -1,10 +1,10 @@
 use anyhow;
+use log;
 //use tokio::time;
 use wasmtime::{Engine, Linker, Module, Store, Instance};
 use wasmtime_wasi::p1::{self, WasiP1Ctx};
 use wasmtime_wasi::{ WasiCtxBuilder, DirPerms, FilePerms };
 use wasmtime_wasi_nn::witx::WasiNnCtx;
-
 
 
 /// Represents the WebAssembly context for WASI and WASI-NN.
@@ -31,7 +31,7 @@ pub struct WasmRuntime {
 impl WasmRuntime {
     pub fn new(id: usize, wasm_file: &str) -> anyhow::Result<Self>
     {
-        //println!("Creating WASM runtime with ID: {} with wasm file: {}", id, wasm_file);
+        log::info!("[Runtime {}] Creating WASM with wasm file: {}", id, wasm_file);
 
         let engine = Engine::default();
 
@@ -47,6 +47,7 @@ impl WasmRuntime {
 
 
         // Create the WASI and WASI-NN contexts
+        // Add a "[WASM]" prefix to stdout
         let wasi = WasiCtxBuilder::new()
             .args(&args)
             .inherit_stdout()
@@ -70,12 +71,12 @@ impl WasmRuntime {
     }
     pub fn run(&mut self) -> anyhow::Result<String> {
 
-        println!("Getting _start function for ID: {}", self.id);
+        log::info!("[Runtime {}] Running WASM", self.id);
+
         let func = self.instance.get_typed_func::<(), ()>(&mut self.store, "_start")?;
-        println!("Running WASM runtime with ID: {}", self.id);
         func.call(&mut self.store, ())?;
-        println!("Finished running WASM runtime with ID: {}", self.id);
-        Ok(format!("Runtime {} executed!", self.id))
+
+        Ok(format!("[Runtime {}] Executed WASM", self.id))
     }
 
 
